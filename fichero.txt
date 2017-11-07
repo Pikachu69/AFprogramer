@@ -1,1 +1,2 @@
-state q1, q2; alpha b;
+state q1, q2;
+alpha a, b;

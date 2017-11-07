@@ -7,17 +7,13 @@ package analizador;
 
 import java.io.File;
 
-/**
- *
- * @author Carlos
- */
 public class Main {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String path = "C:/analizadorLexico-Java/src/analizador/Lexer.flex";
+        String path = "C:/analizadorLexico-Java/AFprogramer/src/analizador/Lexer.flex";
         generarLexer(path);
 
     }

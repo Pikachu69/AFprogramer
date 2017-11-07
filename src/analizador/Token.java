@@ -5,10 +5,6 @@
 
 package analizador;
 
-/**
- *
- * @author Carlos
- */
 public enum Token {
-    IDENTIFICADOR, ERROR, TRANSICION, ALFABETO
+    IDENTIFICADOR, ERROR, TRANSICION, ALFABETO, PALABRA_RESERVADA, SIMBOLO, DELIMITADOR
 }

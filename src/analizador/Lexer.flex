@@ -6,8 +6,6 @@ import static analizador.Token.*;
 L = [a-zA-Z]
 L2 = [a-z]
 D = [0-9]
-C = [,]
-F = [;]
 WHITE=[ \t\r\n]
 %{
 public String lexeme;
@@ -16,8 +14,20 @@ public String lexeme;
 {WHITE} {/*Ignore*/}
 "->" {return TRANSICION;}
 
-("alpha")(" ")({L2}|{D})({C}(" ")*({L2}|{D}))*({F}) {lexeme=yytext(); return ALFABETO}
+"," {return SIMBOLO;}
 
-("state")(" ")({L}|{D})({L}|{D})*({C}(" ")*({L}|{D})({L}|{D})*)*({F}) {lexeme=yytext(); return IDENTIFICADOR;}
+"init" {lexeme=yytext(); return PALABRA_RESERVADA;}
+
+"state" {lexeme=yytext(); return PALABRA_RESERVADA;}
+
+"alpha" {lexeme=yytext(); return PALABRA_RESERVADA;}
+
+"end" {lexeme=yytext(); return PALABRA_RESERVADA;}
+
+(" ")(({L2})|({D})) {lexeme=yytext(); return ALFABETO;}
+
+(" ")({L})+({D})+ {lexeme=yytext(); return IDENTIFICADOR;}
+
+";" {return DELIMITADOR;}
 
 . {return ERROR;}
