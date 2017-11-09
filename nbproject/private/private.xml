@@ -4,12 +4,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/analizadorLexico-Java/src/analizador/Main.java</file>
-            <file>file:/C:/analizadorLexico-Java/src/analizador/Lexer.flex</file>
-            <file>file:/C:/analizadorLexico-Java/src/analizador/interfaz.java</file>
-            <file>file:/C:/analizadorLexico-Java/src/analizador/Token.java</file>
-            <file>file:/C:/analizadorLexico-Java/src/analizador/identificador.java</file>
-            <file>file:/C:/analizadorLexico-Java/src/analizador/Lexer.java</file>
+            <file>file:/C:/analizadorLexico-Java/AFprogramer/src/analizador/Lexer.flex</file>
+            <file>file:/C:/analizadorLexico-Java/AFprogramer/src/analizador/interfaz.java</file>
+            <file>file:/C:/analizadorLexico-Java/AFprogramer/src/analizador/Lexer.java</file>
+            <file>file:/C:/analizadorLexico-Java/AFprogramer/src/analizador/Token.java</file>
+            <file>file:/C:/analizadorLexico-Java/AFprogramer/src/analizador/Main.java</file>
         </group>
     </open-files>
 </project-private>
