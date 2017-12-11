@@ -1,37 +1,54 @@
 package analizador;
-import static analizador.Token.*;
+
+import java_cup.runtime.*;
 %%
 %class Lexer
-%type Token
+
+%cup
+%line
+%column
+
 L = [a-zA-Z]
 L2 = [a-z]
 D = [0-9]
-A = [(]
-A2 = [)]
-WHITE=[ \t\r\n]
+WHITE = [ \b\r\f\t\n]
+
 %{
-public String lexeme;
+public String Lexeme;
+public Symbol token(int simbolo){
+		Lexema lexema = new Lexema( yytext() );
+		Interface.setError("La cadena '"+yytext()+"' es invalida, se encontro en la linea "+(yyline+1)+", y en la columna "+(yycolumn+1));
+		return new Symbol(simbolo,yyline,yycolumn,lexema);
+	}
+	public Symbol token(int simbolo,String componenteLexico){
+		Sintactico.vars++;
+		Lexema lexema = new Lexema( yytext() );
+                Interface.addLexemes(yytext()+","+componenteLexico); // esta linea para el video Himura para la tabla de simbolos
+		return new Symbol(simbolo,yyline,yycolumn,lexema);
+	}
 %}
 %%
 {WHITE} {/*Ignore*/}
-"->" {return TRANSICION;}
+//----------------> Simbolos
 
-"," {return SIMBOLO;}
+"->" { return token(sym.TRANSICION,"Transicion"); }
+","  { return token(sym.SEPARADOR,"Separador"); }
+";"  { return token(sym.DELIMITADOR,"Delimitador"); }
+"("  { return token(sym.PARENTESIS_ABRE,"Parentesis_Abre"); }
+")"  { return token(sym.PARENTESIS_CIERRA,"Parentesis_Cierra"); }
 
-"init" {lexeme=yytext(); return PALABRA_RESERVADA;}
+//--------------> Simbolos ER
 
-"state" {lexeme=yytext(); return PALABRA_RESERVADA;}
+"init"  { Lexeme=yytext(); return token(sym.INICIAL,"init");}
 
-"alpha" {lexeme=yytext(); return PALABRA_RESERVADA;}
+"state" { Lexeme=yytext(); return token(sym.ESTADO,"state");}
 
-"end" {lexeme=yytext(); return PALABRA_RESERVADA;}
+"alpha" { Lexeme=yytext(); return token(sym.ALFABETO,"alpha");}
 
-(" ")(({L2})|({D})) {lexeme=yytext(); return ALFABETO;}
+"end"   { Lexeme=yytext(); return token(sym.FIN,"end");}
 
-(" ")({L})+({D})+ {lexeme=yytext(); return IDENTIFICADOR;}
+(({L2})|({D})) { Lexeme=yytext(); return token(sym.ALPHA,"Alfabeto");}
 
-";" {return DELIMITADOR;}
+({L})+({D})+ { Lexeme=yytext(); return token(sym.IDENTIFICADOR,"Identificador");}
 
-{A}({L2})((",")?({L2})?)*{A2} {lexeme = yytext(); return ASIGNACION;}
-
-. {return ERROR;}
+. {Lexeme=yytext(); return token(sym.ERROR);}

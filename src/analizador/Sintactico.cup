@@ -1,0 +1,103 @@
+/*-------------- 1ra Area: Codigo de usuario -----------------*/
+//-------------> Importaciones, paquetes
+package analizador;
+import java.io.FileReader;
+import java.util.Hashtable;
+import java.util.Stack;
+import java_cup.runtime.*;
+
+import java_cup.runtime.Symbol;
+
+
+//------------> Codigo para acciones gramaticales
+action code
+{:
+   void print(String msj)
+ 
+   {System.out.println(msj);}
+:}
+
+init with{:
+vars = 0;
+:}
+
+//-----------------> Parser
+parser code {:
+
+    Hashtable<String, Lexema> tabla = new Hashtable<>();
+    int contadorTemporales = 0; 
+    int ifs = 0;
+    int whiles = 0;
+    int fors = 0;
+    int switches = 0;
+    int cases = 0;
+    Stack caso = new Stack();
+
+    public static int vars;
+    StringBuilder m = new StringBuilder("");
+
+
+public void report_error(String message, Object info) {
+        if (info instanceof java_cup.runtime.Symbol){
+            java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+            m=new StringBuilder("Error Critico "+s+" : ");
+            if (s.left >= 0) {m.append(" Linea: "+(s.left+1));
+                if (s.right >= 0)m.append(" Columna: "+(s.right+1)+"\nRepare antes de Continuar");}}
+            if(m.length()!=0)
+                Interface.setError(m+"");
+    }
+
+public void syntax_error(Symbol s){
+append("Error\n"+"linea: "+(s.left+1)+ "\nColumna: "+(s.right+1)+"\n");
+}
+
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+append("Error\n"+"linea: "+(s.left+1)+ "\nColumna: "+(s.right+1)+"\n");
+}
+
+public static void append(String mensaje){
+StringBuilder me;
+    me = new StringBuilder("Error Sintactico: "+" ");
+    me.append(mensaje);
+    //System.out.println(me);
+    Interface.setError(me.toString());
+}
+
+    public static void main(String[] args){
+        try {
+                Sintactico sintactico = new Sintactico(new Lexer(new FileReader(args[0])));
+try{
+                Object result = sintactico.parse().value;}catch(Exception ex){
+
+
+}
+            System.out.println("\n*** Resultados finales ***");
+        } catch (Exception ex) {
+           // ex.printStackTrace();
+        }
+    }
+:};
+
+/*-------------- 2da Area: Declaraciones ---------------------*/
+//------------> Declaraciones de Terminales
+terminal Lexema 
+                IDENTIFICADOR, TRANSICION, ALFABETO, INICIAL, DELIMITADOR, 
+                SEPARADOR, PARENTESIS_ABRE, PARENTESIS_CIERRA, ESTADO, FIN, ALPHA, ERROR;
+
+//------------> Declaraciones de no terminales
+non terminal Lexema INICIO, IDE, AL, TRANSICIONES;
+
+
+start with INICIO;
+
+/*-------------- 3ra Area: Reglas Sintacticas -----------------*/
+INICIO::= ESTADO IDE DELIMITADOR INICIAL IDENTIFICADOR DELIMITADOR FIN IDE DELIMITADOR ALFABETO AL DELIMITADOR TRANSICIONES;
+
+ 
+IDE::= IDENTIFICADOR | IDENTIFICADOR SEPARADOR IDE;
+
+AL::= ALPHA | ALPHA SEPARADOR AL;
+
+TRANSICIONES::= IDENTIFICADOR TRANSICION IDENTIFICADOR PARENTESIS_ABRE AL PARENTESIS_CIERRA DELIMITADOR 
+              | IDENTIFICADOR TRANSICION IDENTIFICADOR PARENTESIS_ABRE AL PARENTESIS_CIERRA DELIMITADOR TRANSICIONES;

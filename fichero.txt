@@ -1,4 +1,6 @@
-state q2, q3;
-init q2;
-end q3;
- q2 -> q3(a);
+state q1, q2;
+init q1;
+end q2;
+alpha a, b;
+q1 -> q2(a);
+q2 -> q1(b);
